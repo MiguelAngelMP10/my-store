@@ -1,25 +1,33 @@
 const express = require("express");
+const faker = require('@faker-js/faker/locale/de');
 const app = express();
 const PORT = 3000;
+
 
 app.get('/', (req, res) => {
   res.send('Hello ');
 });
+
 
 app.get('/route-new', (req, res) => {
   res.send('Hola soy una nueva ruta o endpoint');
 });
 
 app.get('/products', (req, res) => {
-  res.json([{
-    name: 'Laptop Gamer',
-    price: 23000,
-  },
-  {
-    name: 'iPhone X3',
-    price: 32000,
+  const products = [];
+  const {size} = req.query
+  const limit  = size || 10;
+
+  for (let index = 0; index < limit; index++) {
+    products.push({
+      name:faker.commerce.productName(),
+      price: faker.commerce.price(),
+      imagen: faker.image.imageUrl(),
+    })
+
   }
-  ]);
+
+  res.json(products);
 });
 
 app.get('/products/:id', (req, res) => {
