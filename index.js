@@ -1,5 +1,7 @@
 const express = require("express");
 const routerApi = require('./routes');
+const { logErrors, errorHandler } = require('./middlewares/error.handler');
+
 
 const app = express();
 const PORT = 3000;
@@ -16,6 +18,9 @@ app.get('/route-new', (req, res) => {
 });
 
 routerApi(app);
+
+app.use(logErrors);
+app.use(errorHandler);
 
 
 app.get('/products/:id', (req, res) => {
